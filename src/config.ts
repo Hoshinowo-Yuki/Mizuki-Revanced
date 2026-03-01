@@ -283,7 +283,7 @@ export const navBarConfig: NavBarConfig = {
 					name: "Threads",
 					url: "https://threads.com/@goldenlight6628",
 					external: true,
-					icon: "ri:threads-line",
+					icon: "simple-icons:threads",
 				},
 			],
 		},
@@ -378,7 +378,7 @@ export const profileConfig: ProfileConfig = {
 		},
 		{
 			name: "Threads",
-			icon: "ri:threads-line",
+			icon: "simple-icons:threads",
 			url: "https://threads.com/@goldenlight6628",
 		},
 		{
