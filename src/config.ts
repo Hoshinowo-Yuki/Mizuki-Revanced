@@ -263,7 +263,7 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Archive,
 		// 支持自定义导航栏链接，支持多级菜单
 		{
-			name: "Links",
+			name: "Useful Links",
 			url: "/links/",
 			icon: "material-symbols:link",
 			children: [
