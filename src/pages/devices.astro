@@ -93,14 +93,14 @@ const brands = Object.keys(devices);
                 </div>
 
                 <div class="description-wrapper relative">
-                  <p class="description-text text-sm text-60 leading-relaxed line-clamp-2" data-full-description={device.description}>
+                  <p class="description-text text-sm text-60 leading-relaxed line-clamp-2">
                     {device.description}
                   </p>
-                  <div class="description-tooltip hidden absolute z-50 left-0 right-0 bottom-full mb-2 p-3 rounded-lg bg-(--card-bg) border border-(--line-divider) shadow-lg text-sm text-75 leading-relaxed">
-                    <button class="tooltip-close absolute top-2 right-2 p-1 rounded-full hover:bg-(--btn-regular-bg) transition-colors">
+                  <div class="description-tooltip hidden absolute z-50 left-0 right-0 bottom-full mb-2 p-3 rounded-lg bg-(--card-bg) border border-(--line-divider) shadow-lg text-sm text-75 leading-relaxed max-h-48 overflow-y-auto">
+                    <button class="tooltip-close absolute top-2 right-2 p-1 rounded-full hover:bg-(--btn-regular-bg) transition-colors z-10">
                       <Icon name="material-symbols:close" class="text-base text-50" />
                     </button>
-                    <span class="tooltip-content pr-6">{device.description}</span>
+                    <span class="tooltip-content block pr-8">{device.description}</span>
                   </div>
                 </div>
               </div>
@@ -182,8 +182,8 @@ const brands = Object.keys(devices);
             href="${device.link}"
             target="_blank"
             rel="noopener noreferrer"
-            class="device-card group relative overflow-hidden rounded-xl border border-(--line-divider) bg-(--card-bg) transition-all duration-300 hover:border-(--primary)/50 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-white/5 hover:scale-[1.02] hover:-translate-y-0.5 block cursor-pointer"
-            style="animation-delay: ${index * 100}ms; animation: fadeInUp 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; opacity: 0;"
+            class="device-card group relative overflow-hidden rounded-xl border border-(--line-divider) bg-(--card-bg) transition-all duration-300 hover:border-(--primary)/50 hover:shadow-md hover:shadow-black/5 dark:hover:shadow-white/5 hover:scale-[1.02] hover:-translate-y-0.5 block cursor-pointer animate-fade-in"
+            style="--animation-delay: ${index * 100}ms"
           >
             <!-- 设备图片区域 -->
             <div class="relative p-6 pb-0">
@@ -213,23 +213,23 @@ const brands = Object.keys(devices);
               <div class="mb-4">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-(--btn-regular-bg) text-70 text-sm mb-3">
                   <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 7.522 2.943 8.796 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
                   <span class="font-medium">${device.specs}</span>
                 </div>
 
                 <div class="description-wrapper relative">
-                  <p class="description-text text-sm text-60 leading-relaxed line-clamp-2" data-full-description="${device.description.replace(/"/g, '&quot;')}">
+                  <p class="description-text text-sm text-60 leading-relaxed line-clamp-2">
                     ${device.description}
                   </p>
-                  <div class="description-tooltip hidden absolute z-50 left-0 right-0 bottom-full mb-2 p-3 rounded-lg bg-(--card-bg) border border-(--line-divider) shadow-lg text-sm text-75 leading-relaxed">
-                    <button class="tooltip-close absolute top-2 right-2 p-1 rounded-full hover:bg-(--btn-regular-bg) transition-colors">
+                  <div class="description-tooltip hidden absolute z-50 left-0 right-0 bottom-full mb-2 p-3 rounded-lg bg-(--card-bg) border border-(--line-divider) shadow-lg text-sm text-75 leading-relaxed max-h-48 overflow-y-auto">
+                    <button class="tooltip-close absolute top-2 right-2 p-1 rounded-full hover:bg-(--btn-regular-bg) transition-colors z-10">
                       <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
-                    <span class="tooltip-content pr-6">${device.description}</span>
+                    <span class="tooltip-content block pr-8">${device.description}</span>
                   </div>
                 </div>
               </div>
@@ -319,8 +319,9 @@ const brands = Object.keys(devices);
       }
     }
 
-    .onload-animation {
+    .device-card {
       animation: fadeInUp 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+      animation-delay: var(--animation-delay, 0ms);
       opacity: 0;
     }
 
@@ -356,7 +357,6 @@ const brands = Object.keys(devices);
     /* Description 点击样式 */
     .description-text {
       cursor: pointer;
-      position: relative;
       transition: color 0.2s ease;
     }
     
@@ -364,27 +364,13 @@ const brands = Object.keys(devices);
       color: var(--text-75);
     }
     
-    .description-text::after {
-      content: '点击查看完整描述';
-      position: absolute;
-      bottom: -1.25rem;
-      left: 0;
-      font-size: 0.7rem;
-      color: var(--primary);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      pointer-events: none;
-    }
-    
-    .description-text:hover::after {
-      opacity: 0.7;
-    }
-    
     /* Tooltip 样式 */
     .description-tooltip {
       backdrop-filter: blur(10px);
       animation: tooltipFadeIn 0.2s ease-out;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      word-wrap: break-word;
+      word-break: break-word;
     }
     
     .description-tooltip::after {
@@ -428,10 +414,6 @@ const brands = Object.keys(devices);
 
       .device-card .p-6.pt-4 {
         padding: 1rem;
-      }
-      
-      .description-text::after {
-        content: '点击查看';
       }
     }
 
