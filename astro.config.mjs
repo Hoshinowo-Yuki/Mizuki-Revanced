@@ -127,7 +127,6 @@ export default defineConfig({
 			remarkSectionize,
 			parseDirectiveNode,
 			remarkMermaid,
-			remarkModifiedTime,
 		],
 		rehypePlugins: [
 			rehypeKatex,
