@@ -48,13 +48,13 @@ function createBanner(message: string): void {
                 position: fixed;
                 top: 20px;
                 right: 20px;
-                background: oklch(from var(--primary) 95% 0.05 h / 0.8);
+                background: oklch(from var(--card-bg) 95% 0.05 h / 0.8);
                 backdrop-filter: blur(12px);
                 -webkit-backdrop-filter: blur(12px);
                 color: var(--text-color, oklch(0.3 0.02 0));
                 padding: 15px 20px;
                 border-radius: 12px;
-                border: 1px solid oklch(from var(--primary) 70% 0.1 h / 0.3);
+                border: 1px solid oklch(from var(--card-bg) 70% 0.1 h / 0.3);
                 z-index: 99999;
                 font-size: 14px;
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
