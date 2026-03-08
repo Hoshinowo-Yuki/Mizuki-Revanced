@@ -8,5 +8,11 @@ export function KeyboardComponent(properties, children) {
 			? children.map((c) => c.value || "").join("")
 			: "?");
 
-	return h("kbd", {}, keyText);
+	const useThemeColor = "theme" in properties;
+
+	const style = useThemeColor 
+		? "color: var(--primary);" 
+		: "";
+
+	return h("kbd", { style }, keyText);
 }
