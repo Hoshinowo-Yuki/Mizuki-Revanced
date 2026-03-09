@@ -122,13 +122,13 @@ export default defineConfig({
 	],
 	markdown: {
 		remarkPlugins: [
-			remarkTabs,
 			remarkMath,
 			remarkContent,
-			remarkFixGithubAdmonitions,
 			remarkDirective,
-			remarkSectionize,
 			parseDirectiveNode,
+			remarkTabs,
+			remarkFixGithubAdmonitions,
+			remarkSectionize,
 			remarkMermaid,
 		],
 		rehypePlugins: [
