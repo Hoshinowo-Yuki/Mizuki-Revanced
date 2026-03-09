@@ -34,10 +34,10 @@
   background: oklch(var(--p) / 0.05);
 }
 
-/* Active Tab */
+/* Active Tab - using --primary */
 .tab-radio:checked + .tab-button {
-  color: oklch(var(--p));
-  border-bottom-color: oklch(var(--p));
+  color: var(--primary);
+  border-bottom-color: var(--primary);
   font-weight: 600;
 }
 
@@ -48,10 +48,24 @@
 
 .tab-content {
   display: none;
+  opacity: 0;
+  transform: translateY(8px);
 }
 
 .tab-content-active {
   display: block;
+  animation: tabFadeIn 0.3s ease forwards;
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Fix nested content margins */
