@@ -55,33 +55,31 @@ function extractText(node) {
 }
 
 function generateChatHtml(messages) {
-  const messagesHtml = messages.map(msg => {
-    const positionClass = msg.position === 'right' ? 'chat-right' : 'chat-left';
+  return messages.map(msg => {
+    const positionClass = msg.position === 'right' ? 'right' : 'left';
     
     const contentHtml = msg.lines.map(line => {
-      if (line.startsWith('>') || line.startsWith('＞')) {
-        const quoteText = line.slice(1).trim();
-        return `<div class="chat-quote">${escapeHtml(quoteText)}</div>`;
+      // Check for quote (supports > and ＞)
+      if (/^[>＞]/.test(line)) {
+        const quoteText = line.replace(/^[>＞]\s*/, '');
+        return `<div class="etag-chat-quote">${escapeHtml(quoteText)}</div>`;
       }
       return `<p>${escapeHtml(line)}</p>`;
     }).join('');
 
     return `
-      <div class="chat-message ${positionClass}">
-        <div class="chat-bubble">
-          <div class="chat-header">
-            <span class="chat-name">${escapeHtml(msg.name)}</span>
-            ${msg.datetime ? `<span class="chat-time">${escapeHtml(msg.datetime)}</span>` : ''}
+      <div class="etag-chat ${positionClass}">
+        <div class="etag-chat-content">
+          <div class="etag-chat-author">
+            ${escapeHtml(msg.name)}${msg.datetime ? `<span class="etag-chat-time">${escapeHtml(msg.datetime)}</span>` : ''}
           </div>
-          <div class="chat-content">
+          <div class="etag-chat-message">
             ${contentHtml}
           </div>
         </div>
       </div>
     `;
   }).join('');
-
-  return `<div class="chat-container">${messagesHtml}</div>`;
 }
 
 function escapeHtml(str) {
