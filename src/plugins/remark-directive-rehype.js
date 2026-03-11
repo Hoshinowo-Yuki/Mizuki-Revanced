@@ -9,6 +9,10 @@ export function parseDirectiveNode() {
 				node.type === "leafDirective" ||
 				node.type === "textDirective"
 			) {
+				// 跳過 chat - 由 remarkChat 處理
+				if (node.name === 'chat') {
+						return;
+				}
 				// biome-ignore lint/suspicious/noAssignInExpressions: <check later>
 				const data = node.data || (node.data = {});
 				node.attributes = node.attributes || {};
