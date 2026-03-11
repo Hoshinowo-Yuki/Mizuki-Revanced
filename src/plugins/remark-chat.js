@@ -4,6 +4,9 @@ export function remarkChat() {
   return (tree) => {
     visit(tree, (node) => {
       if (node.type === 'containerDirective' && node.name === 'chat') {
+        console.log('=== PROCESSING CHAT ===');
+        console.log('node.type before:', node.type);
+        
         const messages = [];
         let currentMessage = null;
 
@@ -68,8 +71,13 @@ export function remarkChat() {
         }).join('');
 
         node.type = 'html';
-        node.value = `<div class="chat-container">${html}</div>`;
-        node.children = undefined;
+        node.value = `<div class="chat-container" data-v="2">${html}</div>`;
+        delete node.children;
+        delete node.name;
+        delete node.data;
+        
+        console.log('node.type after:', node.type);
+        console.log('node.value preview:', node.value.substring(0, 100));
       }
     });
   };
