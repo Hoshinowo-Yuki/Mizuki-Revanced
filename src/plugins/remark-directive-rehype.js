@@ -1,4 +1,3 @@
-cat > src/plugins/remark-directive-rehype.js << 'EOF'
 import { h } from "hastscript";
 import { visit } from "unist-util-visit";
 
@@ -10,11 +9,11 @@ export function parseDirectiveNode() {
         node.type === "leafDirective" ||
         node.type === "textDirective"
       ) {
-        console.log('[parseDirectiveNode] name:', node.name, '| type:', node.type);
+        console.log("[parseDirectiveNode] name:", node.name, "| type:", node.type);
         
         // 跳過 chat - 由 remarkChat 處理
-        if (node.name === 'chat') {
-          console.log('[parseDirectiveNode] SKIPPING CHAT');
+        if (node.name === "chat") {
+          console.log("[parseDirectiveNode] SKIPPING CHAT");
           return;
         }
         
@@ -36,4 +35,3 @@ export function parseDirectiveNode() {
     });
   };
 }
-EOF
