@@ -10,9 +10,7 @@ export function remarkChat() {
         for (const child of node.children) {
           if (child.type === 'blockquote' && currentMessage) {
             const blockText = extractText(child);
-            console.log('BLOCKQUOTE TEXT:', JSON.stringify(blockText));
             const lines = blockText.split('\n');
-            console.log('BLOCKQUOTE LINES:', lines);
             if (lines.length > 0) {
               currentMessage.quote = lines[0];
               if (lines.length > 1) {
@@ -58,33 +56,19 @@ export function remarkChat() {
           messages.push(currentMessage);
         }
 
-        console.log('FINAL MESSAGES:', JSON.stringify(messages, null, 2));
-
-        const html = `<div class="chat-container">
-${messages.map(msg => {
-  let contentHtml = '';
-  if (msg.quote) {
-    contentHtml += `<blockquote>${escapeHtml(msg.quote)}</blockquote>\n        `;
-  }
-  if (msg.content.length > 0) {
-    contentHtml += msg.content.map(c => `<p>${escapeHtml(c)}</p>`).join('\n        ');
-  }
-  return `  <div class="chat-message chat-${msg.position}">
-    <div class="chat-bubble">
-      <div class="chat-header">
-        <span class="chat-name">${escapeHtml(msg.name)}</span>
-        <span class="chat-date">${escapeHtml(msg.date)}</span>
-      </div>
-      <div class="chat-content">
-        ${contentHtml || ''}
-      </div>
-    </div>
-  </div>`;
-}).join('\n')}
-</div>`;
+        const html = messages.map(msg => {
+          let contentHtml = '';
+          if (msg.quote) {
+            contentHtml += `<blockquote>${escapeHtml(msg.quote)}</blockquote>`;
+          }
+          if (msg.content.length > 0) {
+            contentHtml += msg.content.map(c => `<p>${escapeHtml(c)}</p>`).join('');
+          }
+          return `<div class="chat-message chat-${msg.position}"><div class="chat-bubble"><div class="chat-header"><span class="chat-name">${escapeHtml(msg.name)}</span><span class="chat-date">${escapeHtml(msg.date)}</span></div><div class="chat-content">${contentHtml}</div></div></div>`;
+        }).join('');
 
         node.type = 'html';
-        node.value = html;
+        node.value = `<div class="chat-container">${html}</div>`;
         node.children = undefined;
       }
     });
