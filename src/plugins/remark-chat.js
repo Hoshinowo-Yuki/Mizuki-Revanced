@@ -2,27 +2,18 @@ import { visit } from 'unist-util-visit';
 
 export function remarkChat() {
   return (tree) => {
-    visit(tree, 'containerDirective', (node) => {
-      if (node.name !== 'chat') return;
-
-      let debug = '<pre style="background:#ffe;padding:10px;font-size:12px;overflow:auto;">';
-      debug += 'Children: ' + (node.children?.length || 0) + '\n';
-      
-      node.children?.forEach((child, i) => {
-        debug += `\n[${i}] type: ${child.type}\n`;
-        if (child.children) {
-          child.children.forEach((c, j) => {
-            const val = c.value ? c.value.substring(0, 100).replace(/</g, '&lt;') : '(no value)';
-            debug += `  [${i}.${j}] ${c.type}: ${val}\n`;
-          });
-        }
-      });
-      
-      debug += '</pre>';
-
-      node.type = 'html';
-      node.value = debug;
-      node.children = [];
+    let found = [];
+    
+    visit(tree, (node) => {
+      if (node.name) {
+        found.push(node.name + ':' + node.type);
+      }
+    });
+    
+    // 在 tree 最前面加 debug 資訊
+    tree.children.unshift({
+      type: 'html',
+      value: `<pre style="background:#fef;padding:10px;">All directives found: ${found.join(', ') || 'NONE'}</pre>`
     });
   };
 }
