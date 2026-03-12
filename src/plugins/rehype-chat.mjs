@@ -1,4 +1,3 @@
-cat > src/plugins/rehype-chat.mjs << 'EOF'
 /// <reference types="mdast" />
 import { h } from "hastscript";
 
