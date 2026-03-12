@@ -7,6 +7,11 @@
   padding: 1rem;
 }
 
+.chat-container.chat-empty {
+  color: var(--text-muted, #888);
+  font-style: italic;
+}
+
 /* Chat Message */
 .chat-message {
   display: flex;
@@ -41,15 +46,15 @@
   flex-direction: row-reverse;
 }
 
-.chat-name {
+.chat-username {
   font-size: 14px;
   font-weight: 600;
-  color: var(--chat-name-color, #333);
+  color: var(--chat-username-color, #333);
 }
 
-.chat-date {
+.chat-timestamp {
   font-size: 11px;
-  color: var(--chat-date-color, #999);
+  color: var(--chat-timestamp-color, #999);
 }
 
 /* Chat Content */
@@ -96,12 +101,12 @@
 }
 
 /* Dark Mode */
-:root.dark .chat-name {
-  color: var(--chat-name-color-dark, #eee);
+:root.dark .chat-username {
+  color: var(--chat-username-color-dark, #eee);
 }
 
-:root.dark .chat-date {
-  color: var(--chat-date-color-dark, #888);
+:root.dark .chat-timestamp {
+  color: var(--chat-timestamp-color-dark, #888);
 }
 
 :root.dark .chat-left .chat-content {
