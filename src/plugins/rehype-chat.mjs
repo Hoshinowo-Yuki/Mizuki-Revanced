@@ -1,73 +1,106 @@
-import { visit } from 'unist-util-visit';
+cat > src/plugins/rehype-chat.mjs << 'EOF'
+/// <reference types="mdast" />
+import { h } from "hastscript";
 
-export function remarkChat() {
-  return (tree) => {
-    visit(tree, 'code', (node, index, parent) => {
-      if (node.lang !== 'chat') return;
-
-      const lines = node.value.split('\n');
-      const messages = [];
-      let current = null;
-
-      for (const line of lines) {
-        // Match: [username] or [username|position] or [username|position|replyTo]
-        const headerMatch = line.match(/^\[([^\]|]+)(?:\|([^\]|]+))?(?:\|([^\]]+))?\]\s*(.*)$/);
-
-        if (headerMatch) {
-          if (current) messages.push(current);
-          const [, username, pos, replyTo, rest] = headerMatch;
-          current = {
-            username: username.trim(),
-            position: pos?.trim() || 'left',
-            replyTo: replyTo?.trim() || null,
-            time: null,
-            content: []
-          };
-
-          // Check for timestamp
-          const timeMatch = rest.match(/^\(([^)]+)\)\s*(.*)$/);
-          if (timeMatch) {
-            current.time = timeMatch[1];
-            if (timeMatch[2]) current.content.push(timeMatch[2]);
-          } else if (rest) {
-            current.content.push(rest);
-          }
-        } else if (current) {
-          current.content.push(line);
-        }
-      }
-      if (current) messages.push(current);
-
-      // Build HTML
-      const chatHtml = messages.length === 0
-        ? `<div class="chat-container chat-empty">No messages</div>`
-        : `<div class="chat-container">${messages.map(msg => {
-            const pos = msg.position === 'right' ? 'right' : 'left';
-            const replyHtml = msg.replyTo 
-              ? `<span class="chat-reply-to"><span class="iconify" data-icon="fa6-solid:reply"></span> @${msg.replyTo}</span>` 
-              : '';
-            return `
-              <div class="chat-message chat-${pos}">
-                <div class="chat-bubble">
-                  <div class="chat-header">
-                    <span class="chat-username">${msg.username}</span>
-                    ${msg.time ? `<span class="chat-timestamp">${msg.time}</span>` : ''}
-                  </div>
-                  <div class="chat-content">
-                    ${replyHtml}
-                    ${msg.content.join('\n')}
-                  </div>
-                </div>
-              </div>
-            `;
-          }).join('')}</div>`;
-
-      parent.children[index] = {
-        type: 'html',
-        value: chatHtml
-      };
-    });
+/**
+ * 解析聊天消息的 header 行
+ * 格式: [username|timestamp] 或 [username|timestamp|right]
+ */
+function parseChatHeader(text) {
+  const match = text.match(/^\[([^|]+)\|([^|\]]+)(?:\|(\w+))?\]/);
+  if (!match) return null;
+  
+  return {
+    username: match[1].trim(),
+    timestamp: match[2].trim(),
+    position: match[3]?.trim() || 'left'
   };
 }
 
-export default remarkChat;
+/**
+ * 從 children 中提取文本內容
+ */
+function extractText(node) {
+  if (!node) return '';
+  if (node.type === 'text') return node.value;
+  if (node.children) {
+    return node.children.map(extractText).join('');
+  }
+  return '';
+}
+
+/**
+ * 處理 chat directive
+ */
+export function rehypeChat(properties, children) {
+  if (!Array.isArray(children) || children.length === 0) {
+    return h("div", { class: "chat-container chat-empty" }, "No messages");
+  }
+
+  const messages = [];
+  let currentMessage = null;
+
+  for (const child of children) {
+    // 跳過空白節點
+    if (child.type === 'text' && !child.value.trim()) continue;
+    
+    // 處理段落 <p>
+    if (child.tagName === 'p') {
+      const text = extractText(child);
+      const header = parseChatHeader(text);
+      
+      if (header) {
+        // 這是一個新消息的開始
+        if (currentMessage) {
+          messages.push(currentMessage);
+        }
+        
+        // 提取 header 後面的內容作為消息文本
+        const messageText = text.replace(/^\[[^\]]+\]\s*/, '').trim();
+        
+        currentMessage = {
+          ...header,
+          content: messageText ? [h("p", {}, messageText)] : []
+        };
+      } else if (currentMessage) {
+        // 這是當前消息的延續內容
+        currentMessage.content.push(child);
+      }
+    } 
+    // 處理 blockquote (引用)
+    else if (child.tagName === 'blockquote' && currentMessage) {
+      currentMessage.content.push(child);
+    }
+    // 其他元素也添加到當前消息
+    else if (currentMessage) {
+      currentMessage.content.push(child);
+    }
+  }
+
+  // 添加最後一個消息
+  if (currentMessage) {
+    messages.push(currentMessage);
+  }
+
+  if (messages.length === 0) {
+    return h("div", { class: "chat-container chat-empty" }, "No valid messages found");
+  }
+
+  // 生成消息元素 - 使用 CSS 中定義的 class 名稱
+  const messageElements = messages.map((msg, index) => {
+    return h("div", { 
+      class: `chat-message chat-${msg.position}`,
+      "data-index": index
+    }, [
+      h("div", { class: "chat-bubble" }, [
+        h("div", { class: "chat-header" }, [
+          h("span", { class: "chat-name" }, msg.username),
+          h("span", { class: "chat-date" }, msg.timestamp)
+        ]),
+        h("div", { class: "chat-content" }, msg.content)
+      ])
+    ]);
+  });
+
+  return h("div", { class: "chat-container" }, messageElements);
+}
