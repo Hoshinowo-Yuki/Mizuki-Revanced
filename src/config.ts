@@ -331,7 +331,7 @@ export const navBarConfig: NavBarConfig = {
 					icon: "material-symbols:group",
 				},
 				{
-					name: "Update Log",
+					name: "Updates",
 					url: "/updates/",
 					icon: "mdi:history",
 				},
